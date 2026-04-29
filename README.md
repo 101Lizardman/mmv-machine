@@ -4,6 +4,62 @@ A fullscreen MTG "Momir Vig" simulator. Click a CMC button to draw a random crea
 
 ---
 
+## Quick Start
+
+Complete setup from scratch, in order:
+
+**1. Clone the repo and create a virtual environment**
+
+```bash
+git clone https://github.com/101Lizardman/mmv-machine.git
+cd mmv-machine
+
+python3 -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+# Linux / macOS
+source .venv/bin/activate
+
+pip install pillow==12.2.0 ijson==3.5.0 pyserial==3.5
+```
+
+**2. Download `AtomicCards.json`**
+
+Go to [https://mtgjson.com/downloads/all-files/](https://mtgjson.com/downloads/all-files/) and download **AtomicCards.json** (the compressed `.gz` version is fine — extract it). Place the file in the project root.
+
+**3. Import the creature database**
+
+```bash
+python import_creatures.py --max-entries 0
+```
+
+This creates `creatures.db` (~18,200 creatures, ~3 seconds). Only needs to be run once (or again after a new MTGJson release).
+
+**4. Add the background image**
+
+Place a PNG named `image.png` in the project root. Any landscape image works — the app scales it to fill the window. A Momir Vig card scan is the obvious choice.
+
+**5. Configure the printer port**
+
+Plug in the CH340 USB-to-serial adapter and run:
+
+```bash
+python detect_printer_port.py
+```
+
+This auto-detects the adapter and writes its port to `printer_config.ini`. Skip this step if you have no printer (the app will log a connection error but still function).
+
+**6. Run the app**
+
+```bash
+python momir_vig_machine.py
+```
+
+Click any CMC button (0–16) to draw a random creature. The result is displayed on screen and printed automatically.
+
+---
+
 ## Files
 
 | File | Purpose |
